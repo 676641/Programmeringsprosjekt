@@ -72,6 +72,7 @@ public class KortSamling {
 		int teller = 0;
 		while (samling[teller]!=null && teller < MAKS_KORT) teller++;
 		if (teller<MAKS_KORT) samling[teller] = kort;
+		antall++;
 		
 	}
 	
@@ -90,7 +91,6 @@ public class KortSamling {
 		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
 			Kort kort = new Kort(Kortfarge.Ruter, i);
 			leggTil(kort);
-
 		}
 		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
 			Kort kort = new Kort(Kortfarge.Klover, i);
@@ -110,6 +110,7 @@ public class KortSamling {
 		
 		Kort[] nySamling = new Kort[MAKS_KORT];
 		samling = nySamling;
+		antall = 0;
 	
 	}
 	
@@ -120,12 +121,8 @@ public class KortSamling {
 	 *         null.
 	 */
 	public Kort seSiste() {
-		if(samling[0]==null) return null;
-		for (int i = 1; i<MAKS_KORT; i++){
-			if (samling[i]==null) return samling[i-1];
-		}
-		return samling[MAKS_KORT-1];
-				
+		if (antall>0) return samling[antall-1];
+		return null;			
 	}
 
 	/**
@@ -135,15 +132,10 @@ public class KortSamling {
 	 *         null.
 	 */
 	public Kort taSiste() {
-		Kort retur;
-		if(samling[0]==null) return null;
-		for (int i = 1; i<MAKS_KORT; i++){
-			if (samling[i]==null) {
-
-				retur = samling[i-1];
-			}
-		}
-		retur = samling[MAKS_KORT-1];
+		if (antall==0) return null;
+		Kort retur = samling[antall-1];
+		samling[antall-1] = null;
+		antall--;
 		return retur;
 	}
 	
@@ -156,8 +148,8 @@ public class KortSamling {
 	 */
 	public boolean har(Kort kort) {
 		
-		for (Kort i : samling){
-			if (kort.lik(i)) return true;
+		for (int i = 0; i<antall;i++){
+			if (samling[i].equals(kort)) return true;
 		}
 		return false;
 		
@@ -176,14 +168,15 @@ public class KortSamling {
 	public boolean fjern(Kort kort) {
 		
 		if (!har(kort)) return false;
-		for (int i = 0; i<MAKS_KORT;i++){
+		for (int i = 0; i<antall;i++){
 			if (kort.lik(samling[i])){
 				samling[i] = null;
-				for (int y = i+1;y<MAKS_KORT;y++){
+				for (int y = i+1;y<antall;y++){
 					samling[y-1] = samling[y];
 				}
 			}
 		}
+		antall--;
 		return true;
 		
 	}
@@ -195,7 +188,9 @@ public class KortSamling {
 	 *         som i kortsamlinga.
 	 */
 	public Kort[] getAllekort() {
-		
+		/*Kort[] nySamling = new Kort[MAKS_KORT];
+		samling = nySamling;
+		antall = 0;*/
 		return samling;
 	}
 	
