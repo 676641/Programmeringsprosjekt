@@ -22,10 +22,8 @@ public class KortSamling {
 	 */
 	public KortSamling() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.constructor("KortSamling"));
-		// TODO - END
+		this.samling = new Kort[MAKS_KORT];
+		this.antall = 0;
 	}
 
 	/**
@@ -50,11 +48,7 @@ public class KortSamling {
 	 */
 	public int getAntalKort() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		return antall;
 	}
 	
 	/**
@@ -64,11 +58,7 @@ public class KortSamling {
 	 */
 	public boolean erTom() {
 		
-		// TODO - START
-				
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		return (antall == 0);
 	}
 
 	/**
@@ -79,10 +69,9 @@ public class KortSamling {
 	 */
 	public void leggTil(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+		int teller = 0;
+		while (samling[teller]!=null && teller < MAKS_KORT) teller++;
+		if (teller<MAKS_KORT) samling[teller] = kort;
 		
 	}
 	
@@ -94,9 +83,24 @@ public class KortSamling {
 		
 		// TODO - START
 		// Husk: bruk Regler.MAKS_KORT_FARGE for å få antall kort per farge
+		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
+			Kort kort = new Kort(Kortfarge.Hjerter, i);
+			leggTil(kort);
+		}
+		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
+			Kort kort = new Kort(Kortfarge.Ruter, i);
+			leggTil(kort);
+
+		}
+		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
+			Kort kort = new Kort(Kortfarge.Klover, i);
+			leggTil(kort);
+		}
+		for (int i = 1; i<=Regler.MAKS_KORT_FARGE;i++) {
+			Kort kort = new Kort(Kortfarge.Spar, i);
+			leggTil(kort);
+		}
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
 	}
 
 	/**
@@ -104,10 +108,9 @@ public class KortSamling {
 	 */
 	public void fjernAlle() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+		Kort[] nySamling = new Kort[MAKS_KORT];
+		samling = nySamling;
+	
 	}
 	
 	/**
@@ -117,13 +120,12 @@ public class KortSamling {
 	 *         null.
 	 */
 	public Kort seSiste() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-		
+		if(samling[0]==null) return null;
+		for (int i = 1; i<MAKS_KORT; i++){
+			if (samling[i]==null) return samling[i-1];
+		}
+		return samling[MAKS_KORT-1];
+				
 	}
 
 	/**
@@ -133,12 +135,16 @@ public class KortSamling {
 	 *         null.
 	 */
 	public Kort taSiste() {
-		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
-		// TODO - END
+		Kort retur;
+		if(samling[0]==null) return null;
+		for (int i = 1; i<MAKS_KORT; i++){
+			if (samling[i]==null) {
+
+				retur = samling[i-1];
+			}
+		}
+		retur = samling[MAKS_KORT-1];
+		return retur;
 	}
 	
 	/**
@@ -150,11 +156,10 @@ public class KortSamling {
 	 */
 	public boolean har(Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// return false;
-		// TODO - END
+		for (Kort i : samling){
+			if (kort.lik(i)) return true;
+		}
+		return false;
 		
 	}
 
@@ -170,11 +175,17 @@ public class KortSamling {
 			 
 	public boolean fjern(Kort kort) {
 		
-		// TODO - START
+		if (!har(kort)) return false;
+		for (int i = 0; i<MAKS_KORT;i++){
+			if (kort.lik(samling[i])){
+				samling[i] = null;
+				for (int y = i+1;y<MAKS_KORT;y++){
+					samling[y-1] = samling[y];
+				}
+			}
+		}
+		return true;
 		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
 	}
 
 	/**
@@ -185,12 +196,7 @@ public class KortSamling {
 	 */
 	public Kort[] getAllekort() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
-	
+		return samling;
 	}
 	
 }
