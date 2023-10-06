@@ -28,10 +28,7 @@ public class Spill {
 	
 	public Spill() {
 		
-		// TODO - START
 		
-		throw new UnsupportedOperationException(TODO.constructor("Spill"));
-		// TODO - END
 		
 	}
 	
@@ -42,11 +39,7 @@ public class Spill {
 	 */
 	public Bord getBord() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		return bord;
 		
 	}
 	
@@ -57,11 +50,7 @@ public class Spill {
 	 */
 	public ISpiller getSyd() {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		return syd;
 		
 	}
 
@@ -72,11 +61,7 @@ public class Spill {
 	 */
 	public ISpiller getNord() {
 		
-		// TODO - START
-
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		return nord;
 	}
 
 	/**
@@ -90,10 +75,12 @@ public class Spill {
 	 */
 	public void start() {
 		
-		// TODO - START
+		this.nord = new NordSpiller(Spillere.NORD);
+		this.syd = new SydSpiller(Spillere.SYD);
+		this.bord = new Bord();
+		KortUtils.stokk(bord.getBunkeFra());
 		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+
 	}
 
 	/**
@@ -102,10 +89,10 @@ public class Spill {
 	 */
 	private void delutKort() {
 
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-		// TODO - END
+		for (int i = 0; i<Regler.ANTALL_KORT_START;i++){
+			nord.leggTilKort(bord.taOversteFraBunke());
+			syd.leggTilKort(bord.taOversteFraBunke());
+		}
 	}
 
 	/**
@@ -120,11 +107,10 @@ public class Spill {
 	 */
 	public Kort trekkFraBunke(ISpiller spiller) {
 
-		// TODO - START
-			
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		if(bord.bunkefraTom())bord.snuTilBunken();
+		Kort kort = bord.taOversteFraBunke();
+		spiller.trekker(kort);
+		return kort;
 	}
 
 	/**
@@ -159,11 +145,11 @@ public class Spill {
 	 */
 	public boolean leggnedKort(ISpiller spiller, Kort kort) {
 		
-		// TODO - START
-		
-		throw new UnsupportedOperationException(TODO.method());
-
-		// TODO - END
+		if (!spiller.getHand().har(kort))return false;
+		bord.getBunkeTil().leggTil(kort);
+		spiller.getHand().fjern(kort);
+		spiller.setAntallTrekk(0);
+		return true;
 	}
 
 	/**

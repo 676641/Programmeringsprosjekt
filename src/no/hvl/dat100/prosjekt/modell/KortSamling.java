@@ -69,6 +69,7 @@ public class KortSamling {
 	 */
 	public void leggTil(Kort kort) {
 		
+		if (har(kort)) return;
 		int teller = 0;
 		while (samling[teller]!=null && teller < MAKS_KORT) teller++;
 		if (teller<MAKS_KORT) samling[teller] = kort;
