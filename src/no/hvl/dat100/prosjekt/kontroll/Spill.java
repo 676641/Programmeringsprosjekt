@@ -6,6 +6,7 @@ import no.hvl.dat100.prosjekt.modell.KortSamling;
 import no.hvl.dat100.prosjekt.TODO;
 import no.hvl.dat100.prosjekt.kontroll.dommer.Regler;
 import no.hvl.dat100.prosjekt.kontroll.spill.Handling;
+import no.hvl.dat100.prosjekt.kontroll.spill.HandlingsType;
 import no.hvl.dat100.prosjekt.kontroll.spill.Spillere;
 import no.hvl.dat100.prosjekt.modell.Kort;
 import no.hvl.dat100.prosjekt.modell.KortUtils;
@@ -28,8 +29,10 @@ public class Spill {
 	
 	public Spill() {
 		
-		
-		
+		this.bord = new Bord();
+		this.nord = new NordSpiller(Spillere.NORD);
+		this.syd = new SydSpiller(Spillere.SYD);
+
 	}
 	
 	/**
@@ -74,12 +77,10 @@ public class Spill {
 	 * av en klasse laget av gruppen (implementeres i oppgave 3).
 	 */
 	public void start() {
-		
-		this.nord = new NordSpiller(Spillere.NORD);
-		this.syd = new SydSpiller(Spillere.SYD);
-		this.bord = new Bord();
+	
 		KortUtils.stokk(bord.getBunkeFra());
-		
+		delutKort();
+		bord.vendOversteFraBunke();
 
 	}
 
@@ -125,7 +126,19 @@ public class Spill {
 		
 		// TODO - START
 		// Hint: se på hvilke metoder som er tilgjengelig på en spiller
-		throw new UnsupportedOperationException(TODO.method());
+
+		for (int i = 0; i<spiller.getHand().getAntalKort();i++){
+			if (Regler.kanLeggeNed(spiller.getHand().getAllekort()[i], bord.seOversteBunkeTil())) {
+				Handling h = new Handling(HandlingsType.LEGGNED, spiller.getHand().getAllekort()[i]);
+				return h;
+			}
+		}
+		if (spiller.getAntallTrekk()<Regler.maksTrekk()) return new Handling(HandlingsType.TREKK, bord.seOversteBunkeTil());
+
+		return new Handling(HandlingsType.FORBI, null);
+
+		//Handling handling = spiller.nesteHandling(bord.seOversteBunkeTil());
+		//return handling;
 
 		// TODO - END
 		
@@ -163,8 +176,8 @@ public class Spill {
 		
 		// TODO - START
 		
-		throw new UnsupportedOperationException(TODO.method());
-	
+		spiller.setAntallTrekk(0);
+		
 		// TODO - END
 	}
 
@@ -184,12 +197,15 @@ public class Spill {
 		// TODO - START
 		Kort kort = null;
 
-		// Hint: del opp i de tre mulige handlinger og vurder 
-		// om noen andre private metoder i klassen kan brukes
-		// til å implementere denne metoden
-				
-		throw new UnsupportedOperationException(TODO.method());
-
+		if (handling.getType().equals(HandlingsType.LEGGNED)) {
+			kort = handling.getKort();
+			leggnedKort(spiller, kort);
+		}
+		if (handling.getType().equals(HandlingsType.TREKK)) {
+			kort = trekkFraBunke(spiller);
+		}
+		
+		return kort;
 		// TODO - END
 	}
 

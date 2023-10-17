@@ -40,7 +40,8 @@ public class KortUtils {
 	public static void stokk(KortSamling samling) {
 		Random random = new Random();
 		KortSamling tempSamling = new KortSamling();
-		for (int i = 0; i<samling.getAntalKort();i++) tempSamling.leggTil(samling.taSiste());	
+		int tall = samling.getAntalKort();
+		for (int i = 0; i<tall;i++) tempSamling.leggTil(samling.taSiste());	
 		while(tempSamling.getAntalKort()>0){
 			Kort leggTil = tempSamling.getAllekort()[random.nextInt(tempSamling.getAntalKort())];
 			samling.leggTil(leggTil);

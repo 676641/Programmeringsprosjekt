@@ -6,6 +6,7 @@ import no.hvl.dat100.prosjekt.kontroll.spill.Handling;
 import no.hvl.dat100.prosjekt.kontroll.spill.HandlingsType;
 import no.hvl.dat100.prosjekt.kontroll.spill.Spillere;
 import no.hvl.dat100.prosjekt.modell.Kort;
+import no.hvl.dat100.prosjekt.modell.KortSamling;
 
 /**
  * Klasse som for å representere en vriåtter syd-spiller. Strategien er å lete
@@ -37,11 +38,13 @@ public class SydSpiller extends Spiller {
 	@Override
 	public Handling nesteHandling(Kort topp) {
 
-		// TODO - START
-		/* first-fit strategi */
-	
-		throw new UnsupportedOperationException(TODO.method());
-	
-		// TODO - END
+		KortSamling hand = this.getHand();
+		for (int i = 0; i < hand.getAntalKort();i++){
+			if (Regler.kanLeggeNed(hand.getAllekort()[i], topp)) return new Handling(HandlingsType.LEGGNED, hand.getAllekort()[i]);
+		}
+
+		if (this.getAntallTrekk()<Regler.maksTrekk()) return new Handling(HandlingsType.TREKK, null);
+		
+		return new Handling(HandlingsType.FORBI, null);
 	}
 }
